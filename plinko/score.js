@@ -3,13 +3,16 @@ const outputs = []
 const predictionPoint = 300;
 
 function onScoreUpdate(dropPosition, bounciness, size, bucketLabel) {
-  // Ran every time a balls drops into a bucket
   outputs.push([dropPosition, bounciness, size, bucketLabel]);
 }
 
 function runAnalysis() {
-  // Write code here to analyze stuff
-  console.log('Your ball will probably fall into bucket #' + bucket);
+  const [testSet, trainingSet] = splitDataset(outputs, 10);
+
+  for (i = 0; i < testSet.length; i++) {
+    const bucket = knn(trainingSet, testSet[i][0]);
+    console.log(bucket, testSet[i][3]);
+  }
 }
 
 function knn(data, point) {
@@ -27,7 +30,7 @@ function knn(data, point) {
 }
 
 function distance(pointA, pointB) {
-  return Math.abs(point - pointB);
+  return Math.abs(pointA - pointB);
 }
 
 function splitDataset(data, testCount) {
