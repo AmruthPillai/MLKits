@@ -1,5 +1,6 @@
 const k = 10;
 const outputs = []
+const testSetSize = 10;
 const predictionPoint = 300;
 
 function onScoreUpdate(dropPosition, bounciness, size, bucketLabel) {
@@ -7,12 +8,16 @@ function onScoreUpdate(dropPosition, bounciness, size, bucketLabel) {
 }
 
 function runAnalysis() {
-  const [testSet, trainingSet] = splitDataset(outputs, 10);
+  const [testSet, trainingSet] = splitDataset(outputs, testSetSize);
 
+  let numberCorrect = 0;
   for (i = 0; i < testSet.length; i++) {
     const bucket = knn(trainingSet, testSet[i][0]);
-    console.log(bucket, testSet[i][3]);
+    if (bucket === testSet[i][3])
+      numberCorrect++
   }
+
+  console.log('Accuracy: ' + numberCorrect / testSetSize)
 }
 
 function knn(data, point) {
@@ -33,11 +38,11 @@ function distance(pointA, pointB) {
   return Math.abs(pointA - pointB);
 }
 
-function splitDataset(data, testCount) {
+function splitDataset(data, testSetSize) {
   const shuffled = _.shuffle(data);
 
-  const testSet = _.slice(shuffled, 0 , testCount);
-  const trainingSet = _.slice(shuffled, testCount);
+  const testSet = _.slice(shuffled, 0 , testSetSize);
+  const trainingSet = _.slice(shuffled, testSetSize);
 
   return [testSet, trainingSet];
 }
