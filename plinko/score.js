@@ -12,9 +12,9 @@ function runAnalysis() {
   console.log('Your ball will probably fall into bucket #' + bucket);
 }
 
-function knn(data) {
+function knn(data, point) {
   return _.chain(data)
-    .map((row) => [distance(row[0]), row[3]])
+    .map((row) => [distance(row[0], point), row[3]])
     .sortBy(0)
     .slice(0, k)
     .countBy(1)
@@ -26,8 +26,8 @@ function knn(data) {
     .value();
 }
 
-function distance(point) {
-  return Math.abs(point - predictionPoint);
+function distance(pointA, pointB) {
+  return Math.abs(point - pointB);
 }
 
 function splitDataset(data, testCount) {
