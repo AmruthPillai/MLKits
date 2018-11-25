@@ -7,7 +7,7 @@ function onScoreUpdate(dropPosition, bounciness, size, bucketLabel) {
 
 function runAnalysis() {
   const testSetSize = 100;
-  const [testSet, trainingSet] = splitDataset(outputs, testSetSize);
+  const [testSet, trainingSet] = splitDataset(minMax(outputs, 3), testSetSize);
 
   _.range(1, 20).forEach(k => {
     const accuracy = _.chain(testSet)
@@ -18,7 +18,7 @@ function runAnalysis() {
       .divide(testSetSize)
       .value();
 
-    console.log('Accuracy with k = ' + k + ': ' + accuracy + '%');
+    console.log('Accuracy with k = ' + k + ': ' + accuracy * 100 + '%');
   })
 }
 
@@ -58,7 +58,7 @@ function splitDataset(data, testSetSize) {
   return [testSet, trainingSet];
 }
 
-function minmax(data, featureCount) {
+function minMax(data, featureCount) {
   const clonedData = _.cloneDeep(data);
 
   for (let i = 0; i < featureCount; i++) {
