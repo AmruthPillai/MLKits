@@ -1,4 +1,4 @@
-const k = 3;
+const k = 10;
 const outputs = []
 const predictionPoint = 300;
 
@@ -28,4 +28,13 @@ function runAnalysis() {
 
 function distance(point) {
   return Math.abs(point - predictionPoint);
+}
+
+function splitDataset(data, testCount) {
+  const shuffled = _.shuffle(data);
+
+  const testSet = _.slice(shuffled, 0 , testCount);
+  const trainingSet = _.slice(shuffled, testCount);
+
+  return [testSet, trainingSet];
 }
