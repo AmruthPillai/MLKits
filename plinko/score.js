@@ -6,10 +6,13 @@ function onScoreUpdate(dropPosition, bounciness, size, bucketLabel) {
 }
 
 function runAnalysis() {
+  const k = 9;
   const testSetSize = 100;
-  const [testSet, trainingSet] = splitDataset(minMax(outputs, 3), testSetSize);
 
-  _.range(1, 20).forEach(k => {
+  _.range(0, 3).forEach(feature => {
+    const data = _.map(outputs, row => [row[feature], _.last(row)])
+    const [testSet, trainingSet] = splitDataset(minMax(data, 1), testSetSize);
+
     const accuracy = _.chain(testSet)
       .filter(testObservation => {
         return knn(k, trainingSet, _.initial(testObservation)) === _.last(testObservation)
@@ -18,7 +21,7 @@ function runAnalysis() {
       .divide(testSetSize)
       .value();
 
-    console.log('Accuracy with k = ' + k + ': ' + accuracy * 100 + '%');
+    console.log('Accuracy with feature ' + feature + ': ' + accuracy * 100 + '%');
   })
 }
 
