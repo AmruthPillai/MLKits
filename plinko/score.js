@@ -6,12 +6,14 @@ function onScoreUpdate(dropPosition, bounciness, size, bucketLabel) {
 }
 
 function runAnalysis() {
-  const testSetSize = 200;
+  const testSetSize = 100;
   const [testSet, trainingSet] = splitDataset(outputs, testSetSize);
 
-  _.range(1, 30).forEach(k => {
+  _.range(1, 20).forEach(k => {
     const accuracy = _.chain(testSet)
-      .filter(testObservation => knn(k, trainingSet, testObservation[0]) === testObservation[3])
+      .filter(testObservation => {
+        return knn(k, trainingSet, _.initial(testObservation)) === _.last(testObservation)
+      })
       .size()
       .divide(testSetSize)
       .value();
@@ -22,7 +24,12 @@ function runAnalysis() {
 
 function knn(k, data, point) {
   return _.chain(data)
-    .map((row) => [distance(row[0], point), row[3]])
+    .map((row) => {
+      return [
+        distance(_.initial(row), point),
+        _.last(row)
+      ]
+    })
     .sortBy(0)
     .slice(0, k)
     .countBy(1)
