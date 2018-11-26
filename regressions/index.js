@@ -15,4 +15,3 @@ let {
   testFeatures,
   testLabels
 } = loadCSV('./cars.csv', options);
-
