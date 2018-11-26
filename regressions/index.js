@@ -24,7 +24,8 @@ const lr_options = {
 }
 
 const regression = new LinearRegression(features, labels, lr_options);
-regression.train();
 
-console.log('Updated M is:', regression.weights.get(1, 0));
-console.log('Updated B is:', regression.weights.get(0, 0));
+regression.train();
+const r2 = regression.test(testFeatures, testLabels);
+
+console.log('R^2:', r2);
