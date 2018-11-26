@@ -3,11 +3,20 @@ const tf = require('@tensorflow/tfjs');
 const loadCSV = require('./load-csv');
 
 function knn(k, features, labels, predictionPoint) {
+  const { mean, variance } = tf.moments(features, 0);
+
+  const scaledPredictionPoint = predictionPoint.sub(mean).div(variance.pow(0.5));
+
   return features
-    .sub(predictionPoint)
+    // Standardization
+    .sub(mean)
+    .div(variance.pow(0.5))
+    // Distance Calculation
+    .sub(scaledPredictionPoint)
     .pow(2)
     .sum(1)
     .sqrt()
+    // Prediction
     .expandDims(1)
     .concat(labels, 1)
     .unstack()
@@ -19,7 +28,7 @@ function knn(k, features, labels, predictionPoint) {
 const options = {
   shuffle: true,
   splitTest: 10,
-  dataColumns: ['lat', 'long'],
+  dataColumns: ['lat', 'long', 'sqft_lot'],
   labelColumns: ['price']
 };
 
@@ -35,6 +44,6 @@ labels = tf.tensor(labels);
 
 testFeatures.forEach((testPoint, i) => {
   const result = knn(10, features, labels, tf.tensor(testPoint));
-  const err = (testLabels[i][0] - result) / testLabels[i][0];
-  console.log('Error', Math.round((err * 100) * 100) / 100 + '%');
+  const err = ((testLabels[i][0] - result) / testLabels[i][0]) * 100;
+  console.log('Error:', Math.round(err * 100) / 100 + '%');
 })
