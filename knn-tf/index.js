@@ -8,15 +8,12 @@ function knn(k, features, labels, predictionPoint) {
   const scaledPredictionPoint = predictionPoint.sub(mean).div(variance.pow(0.5));
 
   return features
-    // Standardization
     .sub(mean)
     .div(variance.pow(0.5))
-    // Distance Calculation
     .sub(scaledPredictionPoint)
     .pow(2)
     .sum(1)
     .sqrt()
-    // Prediction
     .expandDims(1)
     .concat(labels, 1)
     .unstack()
@@ -28,7 +25,7 @@ function knn(k, features, labels, predictionPoint) {
 const options = {
   shuffle: true,
   splitTest: 10,
-  dataColumns: ['lat', 'long', 'sqft_lot'],
+  dataColumns: ['lat', 'long', 'sqft_lot', 'sqft_living', 'yr_built'],
   labelColumns: ['price']
 };
 
