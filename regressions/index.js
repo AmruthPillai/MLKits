@@ -19,8 +19,8 @@ let {
 } = loadCSV('./cars.csv', csv_options);
 
 const lr_options = {
-  learningRate: 0.000001,
-  iterations: 10000
+  learningRate: 0.0001,
+  iterations: 100
 }
 
 const regression = new LinearRegression(features, labels, lr_options);
