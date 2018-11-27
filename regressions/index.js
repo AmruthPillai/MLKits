@@ -7,7 +7,7 @@ const LinearRegression = require('./linear-regression');
 const csv_options = {
   shuffle: true,
   splitTest: 50,
-  dataColumns: ['horsepower'],
+  dataColumns: ['weight', 'displacement', 'horsepower'],
   labelColumns: ['mpg']
 };
 
@@ -19,7 +19,7 @@ let {
 } = loadCSV('./cars.csv', csv_options);
 
 const lr_options = {
-  learningRate: 0.0001,
+  learningRate: 0.6,
   iterations: 100
 }
 

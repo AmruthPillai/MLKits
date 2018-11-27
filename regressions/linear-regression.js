@@ -4,14 +4,15 @@ const _ = require('lodash');
 class LinearRegression {
 
   constructor(features, labels, options) {
-    this.weights = tf.zeros([2, 1]);
-
+    
     this.features = this.processFeatures(features);
     this.labels = tf.tensor(labels);
     this.options = Object.assign({
       learningRate: 0.1,
       iterations: 1000
     }, options);
+
+    this.weights = tf.zeros([this.features.shape[1], 1]);
   }
 
   gradientDescent() {
@@ -25,7 +26,7 @@ class LinearRegression {
       .div(this.features.shape[0]);
 
     this.weights = this.weights
-      .sub(slopes.mul(this.options.learningRate))
+      .sub(slopes.mul(this.options.learningRate));
   }
 
   train() {
@@ -57,12 +58,31 @@ class LinearRegression {
 
   processFeatures(features) {
     features = tf.tensor(features);
-    
+
+    if (this.mean && this.variance) {
+      features = features
+        .sub(this.mean)
+        .div(this.variance.pow(0.5));
+    } else {
+      features = this.standardize(features);
+    }
+
     features = tf
       .ones([features.shape[0], 1])
       .concat(features, 1)
 
     return features;
+  }
+
+  standardize(features) {
+    const { mean, variance } = tf.moments(features, 0);
+    
+    this.mean = mean;
+    this.variance = variance;
+
+    return features
+      .sub(mean)
+      .div(variance.pow(0.5));
   }
 }
 
