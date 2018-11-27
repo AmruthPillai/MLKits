@@ -19,7 +19,7 @@ let {
 
 const lr_options = {
   learningRate: 0.1,
-  iterations: 100,
+  iterations: 3,
   batchSize: 10
 }
 
@@ -29,3 +29,7 @@ regression.train();
 const r2 = regression.test(testFeatures, testLabels);
 
 console.log('R^2:', r2);
+
+regression.predict([
+  [2, 380, 120]
+]).print();
