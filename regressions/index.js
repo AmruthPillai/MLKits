@@ -1,5 +1,4 @@
 require('@tensorflow/tfjs-node');
-const tf = require('@tensorflow/tfjs');
 
 const loadCSV = require('./load-csv');
 const LinearRegression = require('./linear-regression');
@@ -19,7 +18,7 @@ let {
 } = loadCSV('./cars.csv', csv_options);
 
 const lr_options = {
-  learningRate: 0.6,
+  learningRate: 0.1,
   iterations: 100
 }
 
