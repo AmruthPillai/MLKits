@@ -19,7 +19,7 @@ let {
 
 const lr_options = {
   learningRate: 0.1,
-  iterations: 100
+  iterations: 1000
 }
 
 const regression = new LinearRegression(features, labels, lr_options);
